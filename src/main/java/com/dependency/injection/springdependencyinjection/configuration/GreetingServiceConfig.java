@@ -1,5 +1,6 @@
 package com.dependency.injection.springdependencyinjection.configuration;
 
+import com.dependency.injection.springdependencyinjection.datasource.FakeDatasource;
 import com.dependency.injection.springdependencyinjection.repository.EnglishGreetingRepository;
 import com.dependency.injection.springdependencyinjection.repository.EnglishGreetingRepositoryImpl;
 import com.dependency.injection.springdependencyinjection.service.ConstructorGreetingService;
@@ -9,12 +10,26 @@ import com.dependency.injection.springdependencyinjection.service.PetService;
 import com.dependency.injection.springdependencyinjection.service.PetServiceFactory;
 import com.dependency.injection.springdependencyinjection.service.PropertyGreetingService;
 import com.dependency.injection.springdependencyinjection.service.SetterGreetingService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 
+@PropertySource("classpath:datasource.properties")
 @Configuration
 public class GreetingServiceConfig {
+
+    @Bean
+    public FakeDatasource fakeDatasource(@Value("${db.username}") String username,
+                                         @Value("${db.password}") String password,
+                                         @Value("${db.dbUrl}") String dbUrl) {
+        FakeDatasource fakeDatasource = new FakeDatasource();
+        fakeDatasource.setUsername(username);
+        fakeDatasource.setPassword(password);
+        fakeDatasource.setDbUrl(dbUrl);
+        return fakeDatasource;
+    }
 
     @Bean
     public PetServiceFactory petServiceFactory() {

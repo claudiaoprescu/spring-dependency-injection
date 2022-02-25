@@ -6,6 +6,7 @@ import com.dependency.injection.springdependencyinjection.controller.PetControll
 import com.dependency.injection.springdependencyinjection.controller.PrimaryBeanController;
 import com.dependency.injection.springdependencyinjection.controller.PropertyInjectionController;
 import com.dependency.injection.springdependencyinjection.controller.SetterInjectionController;
+import com.dependency.injection.springdependencyinjection.datasource.FakeDatasource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,6 +36,10 @@ public class SpringDependencyInjectionApplication {
         ConstructorInjectionController constructorInjectionController = (ConstructorInjectionController) ctx.getBean("constructorInjectionController");
         System.out.println("Constructor ------ " + constructorInjectionController.getGreeting());
 
+        FakeDatasource fakeDatasource = ctx.getBean(FakeDatasource.class);
+        System.out.println(fakeDatasource.getUsername());
+        System.out.println(fakeDatasource.getUsername());
+        System.out.println(fakeDatasource.getDbUrl());
 
     }
 
