@@ -1,5 +1,7 @@
 package com.dependency.injection.springdependencyinjection.configuration;
 
+import com.dependency.injection.springdependencyinjection.repository.EnglishGreetingRepository;
+import com.dependency.injection.springdependencyinjection.repository.EnglishGreetingRepositoryImpl;
 import com.dependency.injection.springdependencyinjection.service.ConstructorGreetingService;
 import com.dependency.injection.springdependencyinjection.service.I18nEnglishGreetingService;
 import com.dependency.injection.springdependencyinjection.service.I18nSpanishGreetingService;
@@ -12,10 +14,15 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class GreetingServiceConfig {
 
+    @Bean
+    public EnglishGreetingRepository englishGreetingRepository() {
+        return new EnglishGreetingRepositoryImpl();
+    }
+
     @Profile({"EN", "default"})
     @Bean("i18nService")
-    public I18nEnglishGreetingService i18nEnglishGreetingService() {
-        return new I18nEnglishGreetingService();
+    public I18nEnglishGreetingService i18nEnglishGreetingService(EnglishGreetingRepository englishGreetingRepository) {
+        return new I18nEnglishGreetingService(englishGreetingRepository);
     }
 
     @Profile("ES")
