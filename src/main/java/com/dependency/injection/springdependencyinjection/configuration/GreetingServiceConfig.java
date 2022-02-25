@@ -5,6 +5,8 @@ import com.dependency.injection.springdependencyinjection.repository.EnglishGree
 import com.dependency.injection.springdependencyinjection.service.ConstructorGreetingService;
 import com.dependency.injection.springdependencyinjection.service.I18nEnglishGreetingService;
 import com.dependency.injection.springdependencyinjection.service.I18nSpanishGreetingService;
+import com.dependency.injection.springdependencyinjection.service.PetService;
+import com.dependency.injection.springdependencyinjection.service.PetServiceFactory;
 import com.dependency.injection.springdependencyinjection.service.PropertyGreetingService;
 import com.dependency.injection.springdependencyinjection.service.SetterGreetingService;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,23 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class GreetingServiceConfig {
+
+    @Bean
+    public PetServiceFactory petServiceFactory() {
+        return new PetServiceFactory();
+    }
+
+    @Profile({"dog", "default"})
+    @Bean("petService")
+    public PetService dogPetService(PetServiceFactory petServiceFactory) {
+        return petServiceFactory.getPetService("dog");
+    }
+
+    @Profile("cat")
+    @Bean("petService")
+    public PetService catPetService(PetServiceFactory petServiceFactory) {
+        return petServiceFactory.getPetService("cat");
+    }
 
     @Bean
     public EnglishGreetingRepository englishGreetingRepository() {
